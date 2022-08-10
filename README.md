@@ -23,3 +23,5 @@ nano /etc/puppetlabs/r10k/r10k.yaml
 r10k deploy environment -p
 
 puppet agent -t
+
+puppetserver ca sign --all (puppetserver ca list)
