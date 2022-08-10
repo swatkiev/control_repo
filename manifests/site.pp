@@ -5,3 +5,6 @@ node default {
     owner => 'root',
   }
 }
+node 'teamcity' {
+  include role::master_server
+}
