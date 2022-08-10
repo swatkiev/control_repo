@@ -14,20 +14,22 @@ https://stackoverflow.com/questions/37335/how-to-deal-with-java-lang-outofmemory
 
 https://stackoverflow.com/questions/33244767/command-to-completely-uninstall-puppet-in-the-agent
 
-add to /etc/puppetlabs/puppet/puppet.conf
+- add to /etc/puppetlabs/puppet/puppet.conf
 
 [agent]
 
 server = "your.hostname"
 
-gem install r10k
+- gem install r10k
 
-mkdir /etc/puppetlabs/r10k
+- mkdir /etc/puppetlabs/r10k
 
-nano /etc/puppetlabs/r10k/r10k.yaml
+- nano /etc/puppetlabs/r10k/r10k.yaml
 
-r10k deploy environment -p
+see example in repo
 
-puppet agent -t
+- r10k deploy environment -p
 
-puppetserver ca sign --all (puppetserver ca list)
+- puppet agent -t
+
+- puppetserver ca sign --all (puppetserver ca list)
