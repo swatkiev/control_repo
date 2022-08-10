@@ -14,7 +14,31 @@ https://stackoverflow.com/questions/37335/how-to-deal-with-java-lang-outofmemory
 
 https://stackoverflow.com/questions/33244767/command-to-completely-uninstall-puppet-in-the-agent
 
-- add to /etc/puppetlabs/puppet/puppet.conf
+- wget https://apt.puppetlabs.com/puppet7-release-bionic.deb
+
+- sudo dpkg -i puppet7-release-bionic.deb
+
+- sudo apt update & sudo apt install -y puppetserver
+
+- add puppet to secure_path
+
+sudo visudo
+
+find "secure_path" and add ":/opt/puppetlabs/bin" to the end
+
+- add puppet to PATH
+
+sudo nano /etc/environment
+
+find "PATH" and add ":/opt/puppetlabs/bin" to the end
+
+- change puppetserver JAVA_ARGS (if needed)
+
+sudo nano /etc/default/puppetserver
+
+change 2GB use of RAM to some different (JAVA_ARGS="-Xms256m -Xmx512m -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger")
+
+- add agent to /etc/puppetlabs/puppet/puppet.conf
 
 [agent]
 
