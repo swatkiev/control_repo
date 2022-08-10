@@ -1,3 +1,3 @@
 # control_repo
 
-new changes
+Puppet test
