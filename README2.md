@@ -29,33 +29,20 @@ ansible-playbook manifest.yaml -i myhosts -v
 # playbook example (yaml):
 
 ---
-
   - name: "My first play"
-    
     hosts: localhost
-	
     
     tasks:
 	
-      
       - name: "test reachability"
-	    
-        ping:
-		
-      
+	ping:
+	      
       - name: "nginx install"
+	apt:
+	  name: nginx
+	  state: present
 	      
-        apt:
-		      
-          name: nginx
-		      
-          state: present
-		  
-      
       - name: "find module"
-	      
         find:
-		      
-          path: /root
-		      
-          file_type: file
+	  path: /root
+	  file_type: file
