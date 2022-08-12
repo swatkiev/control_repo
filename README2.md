@@ -30,16 +30,19 @@ ansible-playbook manifest.yaml -i myhosts -v
 
 ---
 
-  - name: "My firs play"
+  - name: "My first play"
     
     hosts: localhost
 	
+    
     tasks:
 	
+      
       - name: "test reachability"
 	    
         ping:
 		
+      
       - name: "nginx install"
 	      
         apt:
@@ -48,6 +51,7 @@ ansible-playbook manifest.yaml -i myhosts -v
 		      
           state: present
 		  
+      
       - name: "find module"
 	      
         find:
