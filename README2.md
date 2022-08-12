@@ -34,13 +34,13 @@ ansible-playbook manifest.yaml -i myhosts -v
     
     hosts: localhost
 	
-	  tasks:
+    tasks:
 	
-	    - name: "test reachability"
+      - name: "test reachability"
 	    
         ping:
 		
-	    - name: "nginx install"
+      - name: "nginx install"
 	      
         apt:
 		      
@@ -48,7 +48,7 @@ ansible-playbook manifest.yaml -i myhosts -v
 		      
           state: present
 		  
-	    - name: "find module"
+      - name: "find module"
 	      
         find:
 		      
