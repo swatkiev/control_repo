@@ -1,4 +1,4 @@
-# For login to AWS you should create file with credentials to AWS
+# For login to AWS you should create file with credentials
 
 1. Create new user with Programmatic access and AdministratorAccess permissions (Attach existing policies directly) in IAM service
 
