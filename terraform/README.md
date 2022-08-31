@@ -12,4 +12,4 @@ aws_access_key_id = your access key ID
 
 aws_secret_access_key = your secret access key
 
-4. Save file in ".aws" folder
+4. Create ".aws" folder in your home directory and save "credentials" file in ".aws" folder
