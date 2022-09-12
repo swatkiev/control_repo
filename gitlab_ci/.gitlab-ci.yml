@@ -11,6 +11,8 @@
 
 # you can delete this line if you're not using Docker
 
+# add $SSHPASS variable with $DEPLOY_HOST password for sshpass command (or use export SSHPASS="your password")
+
 variables:
   DEPLOY_HOST: "root@94.131.243.121:/home/lemp/lemp4docker-master/www/wellfuck.test/index.html"
 
