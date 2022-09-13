@@ -14,7 +14,7 @@
 # add $SSHPASS variable with $DEPLOY_HOST password for sshpass command (or use export SSHPASS="your password")
 
 variables:
-  DEPLOY_HOST: "root@94.131.243.121:/home/lemp/lemp4docker-master/www/wellfuck.test/index.html"
+  DEPLOY_HOST: "user@'your IP':'your directory'/index.html"
 
 image: ubuntu:latest
 
@@ -51,7 +51,7 @@ deploy_website_test:
     - apt update
     - apt install -y sshpass
     - echo -e " \nThis is test version" >> ./public/index.html
-    - sshpass -e scp -P 22987 -oStrictHostKeyChecking=no ./public/index.html $DEPLOY_HOST
+    - sshpass -e scp -P 'your ssh port' -oStrictHostKeyChecking=no ./public/index.html $DEPLOY_HOST
   dependencies:
     - "render_website"
   rules:
@@ -64,7 +64,7 @@ deploy_website_prod:
     - apt update
     - apt install -y sshpass
     - echo -e " \nThis is prod version" >> ./public/index.html
-    - sshpass -e scp -P 22987 -oStrictHostKeyChecking=no ./public/index.html $DEPLOY_HOST
+    - sshpass -e scp -P 'your ssh port' -oStrictHostKeyChecking=no ./public/index.html $DEPLOY_HOST
   dependencies:
     - "render_website"
   rules:
