@@ -11,7 +11,7 @@
 
 # you can delete this line if you're not using Docker
 
-# add $SSHPASS variable with $DEPLOY_HOST password for sshpass command (or use export SSHPASS="your password")
+# add $SSHPASS variable with $DEPLOY_HOST password for sshpass command (or use export SSHPASS="$DEPLOY_HOST password")
 
 variables:
   DEPLOY_HOST: "user@'your IP':'your directory'/index.html"
