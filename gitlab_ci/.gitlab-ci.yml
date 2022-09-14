@@ -33,7 +33,6 @@ render_website:
   artifacts:
     paths:
       - "public/index.html"
-  
 
 test_website:
   stage: test
