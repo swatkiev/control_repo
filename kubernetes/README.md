@@ -17,6 +17,8 @@ sudo install minikube /usr/local/bin/
 
 sudo nano /etc/systemd/system/minikube.service
 
+========================================================================
+
 [Unit]
 
 Description=Runs minikube on startup
@@ -40,6 +42,8 @@ Group=root
 [Install]
 
 WantedBy=multi-user.target
+
+========================================================================
 
 systemctl daemon-reload && systemctl start minikube && systemctl enable minikube
 
