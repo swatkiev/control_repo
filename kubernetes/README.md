@@ -25,7 +25,7 @@ After=vboxautostart-service.service vboxballoonctrl-service.service vboxdrv.serv
 
 [Service]
 
-ExecStart=/usr/local/bin/minikube start --memory=1992mb --driver=none
+ExecStart=/usr/local/bin/minikube start --driver=none (or you can use "minikube start --cpus=2 --memory=2048mb --force --vm-driver=docker")
 
 ExecStop=/usr/local/bin/minikube stop
 
@@ -45,7 +45,7 @@ systemctl daemon-reload && systemctl start minikube && systemctl enable minikube
 
 sudo apt-get install -y conntrack
 
-minikube start --driver=none
+minikube start --driver=none (or you can use "minikube start --cpus=2 --memory=2048mb --force --vm-driver=docker")
 
 # https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
 
@@ -58,6 +58,10 @@ kubectl get pods -n ingress-nginx
 kubectl config view
 
 minikube ip
+
+minikube ssh (if use --vm-driver=docker)
+
+docker exec -it minikube bash (if use --vm-driver=docker)
 
 # before start:
 
