@@ -105,7 +105,10 @@ kubectl logs my-deployment-.......
 
 kubectl exec -it my-deployment-....... bash
 
-# for destroy:
+# for destroy all in cluster:
 
 kubectl delete all --all
 
+# for delete cluster
+
+minikube delete --purge --all
