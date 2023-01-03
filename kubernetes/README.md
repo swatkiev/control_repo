@@ -77,7 +77,7 @@ kubectl apply -f . (with -w parameter)
 
 # after start:
 
-add to /etc/hosts "your.local.ip	teamcity.cluster.local"
+add to /etc/hosts "'minikube.ip'	'hostname of VM in minikube'"
 
 # for check status:
 
