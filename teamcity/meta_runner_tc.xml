@@ -37,13 +37,13 @@ rm -f /root/artifactory/test2.txt]]></param>
       </runner>
       <runner name="test_print_uetci" type="simpleRunner">
         <parameters>
-          <param name="script.content"><![CDATA[#cd uet_ci/sandbox/hydra.pipeline/
+          <param name="script.content"><![CDATA[#cd uet_ci/sandbox/test.pipeline/
 #p4 trust -y
 python3 trigger_uetci.py
 echo "trigger_uetci.py выполнен успешно"
 python3 trigger_uetci2.py
 echo "trigger_uetci2.py выполнен успешно"]]></param>
-          <param name="teamcity.build.workingDir" value="/opt/p4/s_solovey_uetci/" />
+          <param name="teamcity.build.workingDir" value="/opt/p4/swatkiev_uetci/" />
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
@@ -88,7 +88,7 @@ jfrog rt del --spec old_files_deleted.aql --url=%ARTIFACTORY_URL% --user=%ARTIFA
       <runner name="build_status" type="simpleRunner">
         <parameters>
           <param name="script.content"><![CDATA[STATUS=`curl -u "%system.teamcity.auth.userId%:%system.teamcity.auth.password%" http://localhost:8111/app/rest/builds/id:%teamcity.build.id%/status`
-curl -X POST "https://api.telegram.org/bot5705777758:AAGPnLbbwAMjm7K5UzSYt4rtZOoZckPEPNg/sendMessage?chat_id=403270312&text=BuildStatus-$STATUS"]]></param>
+curl -X POST "https://api.telegram.org/bot*****************/sendMessage?chat_id=*********&text=BuildStatus-$STATUS"]]></param>
           <param name="teamcity.step.mode" value="execute_if_failed" />
           <param name="use.custom.script" value="true" />
         </parameters>
