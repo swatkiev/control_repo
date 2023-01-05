@@ -1,0 +1,101 @@
+<meta-runner name="Test_trigger_uetci">
+  <description>Test_trigger_uetci_metarunner</description>
+  <settings>
+    <parameters>
+      <param name="ARTIFACTORY_PASSWORD" value="******" spec="password display='hidden'" />
+      <param name="ARTIFACTORY_URL" value="http://127.0.0.1:8081/artifactory/" />
+      <param name="ARTIFACTORY_USER" value="admin" spec="text display='hidden' validationMode='any'" />
+      <param name="system.build.vcs.number.1" value="%build.vcs.number.TestTask_MyGithub%" spec="text display='hidden' description='%build.vcs.number.TestTask_UetciPipeline%' validationMode='any'" />
+    </parameters>
+    <build-runners>
+      <runner name="check artifactory" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/bin/bash
+
+curl localhost:8082 2> /root/artifactory/test.txt
+cat /root/artifactory/test.txt | grep "curl" > /root/artifactory/test2.txt
+ART=$(</root/artifactory/test2.txt)
+echo $ART
+BADART="curl: (56) Recv failure: Connection reset by peer"
+BADART2="curl: (52) Empty reply from server"
+if [[ $ART == $BADART || $ART == $BADART2 ]]; then
+  echo "Artifactory status FAILED"
+  docker-compose down
+  ping -c5 127.0.0.1
+  docker-compose up -d
+  ping -c100 127.0.0.1
+  echo "Artifactory status OK"
+else
+  echo "Artifactory status OK"
+fi
+rm -f /root/artifactory/test.txt
+rm -f /root/artifactory/test2.txt]]></param>
+          <param name="teamcity.build.workingDir" value="/root/artifactory" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner name="test_print_uetci" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#cd uet_ci/sandbox/hydra.pipeline/
+#p4 trust -y
+python3 trigger_uetci.py
+echo "trigger_uetci.py выполнен успешно"
+python3 trigger_uetci2.py
+echo "trigger_uetci2.py выполнен успешно"]]></param>
+          <param name="teamcity.build.workingDir" value="/opt/p4/s_solovey_uetci/" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner name="check_ssl" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[# ssl certs check
+ssl-cert-check -x30 -f ssl-cert-check-domains | tee ssl_tc.txt
+# teamcity backups
+ls -la /opt/teamcity/backups/]]></param>
+          <param name="teamcity.build.workingDir" value="/home/swatkiev/test/ssl-cert-check/" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner name="send to artifactory" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[DATE=$(date "+%%Y-%%m-%%d")
+curl -X PUT -u %ARTIFACTORY_USER%:%ARTIFACTORY_PASSWORD% http://127.0.0.1:8081/artifactory/generic-local/ssl-${DATE}.txt -T ssl_tc.txt]]></param>
+          <param name="teamcity.build.workingDir" value="/home/swatkiev/test/ssl-cert-check/" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner name="system report" type="simpleRunner">
+        <parameters>
+          <param name="script.content" value="./sysreport" />
+          <param name="teamcity.build.workingDir" value="/root/bashscripting-2874016/Solutions/" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner name="clear old artifactory" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[export CI=True
+jfrog rt del --spec old_files_deleted.aql --url=%ARTIFACTORY_URL% --user=%ARTIFACTORY_USER% --password=%ARTIFACTORY_PASSWORD%]]></param>
+          <param name="teamcity.build.workingDir" value="/root" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner name="build_status" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[STATUS=`curl -u "%system.teamcity.auth.userId%:%system.teamcity.auth.password%" http://localhost:8111/app/rest/builds/id:%teamcity.build.id%/status`
+curl -X POST "https://api.telegram.org/bot5705777758:AAGPnLbbwAMjm7K5UzSYt4rtZOoZckPEPNg/sendMessage?chat_id=403270312&text=BuildStatus-$STATUS"]]></param>
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <requirements>
+      <equals id="RQ_2" name="system.agent.name" value="ubuntu_agent" />
+    </requirements>
+  </settings>
+</meta-runner>
