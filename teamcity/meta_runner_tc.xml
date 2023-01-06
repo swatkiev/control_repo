@@ -13,8 +13,9 @@
           <param name="script.content"><![CDATA[#!/bin/bash
 
 curl localhost:8082 2> /root/artifactory/test.txt
-cat /root/artifactory/test.txt | grep "curl" > /root/artifactory/test2.txt
-ART=$(</root/artifactory/test2.txt)
+# cat /root/artifactory/test.txt | grep "curl" > /root/artifactory/test2.txt
+# ART=$(</root/artifactory/test2.txt)
+ART=`cat /root/artifactory/test.txt | grep "curl"`
 echo $ART
 # BADART="curl: (56) Recv failure: Connection reset by peer"
 # BADART2="curl: (52) Empty reply from server"
