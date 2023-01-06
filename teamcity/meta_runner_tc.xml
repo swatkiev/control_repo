@@ -16,9 +16,10 @@ curl localhost:8082 2> /root/artifactory/test.txt
 cat /root/artifactory/test.txt | grep "curl" > /root/artifactory/test2.txt
 ART=$(</root/artifactory/test2.txt)
 echo $ART
-BADART="curl: (56) Recv failure: Connection reset by peer"
-BADART2="curl: (52) Empty reply from server"
-if [[ $ART == $BADART || $ART == $BADART2 ]]; then
+# BADART="curl: (56) Recv failure: Connection reset by peer"
+# BADART2="curl: (52) Empty reply from server"
+# if [[ $ART == $BADART || $ART == $BADART2 ]]; then
+if [[ $ART =~ ^curl ]]; then
   echo "Artifactory status FAILED"
   docker-compose down
   ping -c5 127.0.0.1
