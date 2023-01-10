@@ -13,14 +13,24 @@
           <param name="script.content"><![CDATA[#!/bin/bash
 
 curl localhost:8082 2> /root/artifactory/test.txt
+curl localhost:8082 > /root/artifactory/newtest.txt
 # cat /root/artifactory/test.txt | grep "curl" > /root/artifactory/test2.txt
 # OLDART=$(</root/artifactory/test2.txt)
-NEWART=`cat /root/artifactory/test.txt | grep "curl"`
+ART=`cat /root/artifactory/test.txt | grep "curl"`
+echo $ART
+NEWART=`cat /root/artifactory/newtest.txt | grep "Unhealthy" | awk {'print $2'}`
 echo $NEWART
 # BADART="curl: (56) Recv failure: Connection reset by peer"
 # BADART2="curl: (52) Empty reply from server"
 # if [[ $OLDART == $BADART || $OLDART == $BADART2 ]]; then
-if [[ $NEWART =~ ^curl ]]; then
+if [[ $ART =~ ^curl ]]; then
+  echo "Artifactory status FAILED"
+  docker-compose down
+  ping -c5 127.0.0.1
+  docker-compose up -d
+  ping -c100 127.0.0.1
+  echo "Artifactory status OK"
+elif [[ $NEWART =~ ^Unhealthy ]]; then
   echo "Artifactory status FAILED"
   docker-compose down
   ping -c5 127.0.0.1
@@ -31,6 +41,7 @@ else
   echo "Artifactory status OK"
 fi
 rm -f /root/artifactory/test.txt
+rm -f /root/artifactory/newtest.txt
 # rm -f /root/artifactory/test2.txt]]></param>
           <param name="teamcity.build.workingDir" value="/root/artifactory" />
           <param name="teamcity.step.mode" value="default" />
