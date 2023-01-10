@@ -23,14 +23,7 @@ echo $NEWART
 # BADART="curl: (56) Recv failure: Connection reset by peer"
 # BADART2="curl: (52) Empty reply from server"
 # if [[ $OLDART == $BADART || $OLDART == $BADART2 ]]; then
-if [[ $ART =~ ^curl ]]; then
-  echo "Artifactory status FAILED"
-  docker-compose down
-  ping -c5 127.0.0.1
-  docker-compose up -d
-  ping -c100 127.0.0.1
-  echo "Artifactory status OK"
-elif [[ $NEWART =~ ^Unhealthy ]]; then
+if [[ $ART =~ ^curl || $NEWART =~ ^Unhealthy ]]; then
   echo "Artifactory status FAILED"
   docker-compose down
   ping -c5 127.0.0.1
