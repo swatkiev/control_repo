@@ -1,0 +1,12 @@
+{
+"files": [{
+    "aql": {
+         "items.find": {
+             "repo": "generic-local",
+             "created": {
+                 "$before": "10d"
+             },
+             "type": "any"
+         }
+    }
+}]}
