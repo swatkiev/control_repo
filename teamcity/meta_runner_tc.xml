@@ -18,7 +18,7 @@ curl localhost:8082 > /root/artifactory/newtest.txt
 # OLDART=$(</root/artifactory/test2.txt)
 ART=`cat /root/artifactory/test.txt | grep "curl"`
 echo $ART
-NEWART=`cat /root/artifactory/newtest.txt | grep "Unhealthy" | awk {'print $2'}`
+NEWART=`cat /root/artifactory/newtest.txt | grep "Unhealthy" | awk 'NR==1 {print $2}'`
 echo $NEWART
 # BADART="curl: (56) Recv failure: Connection reset by peer"
 # BADART2="curl: (52) Empty reply from server"
