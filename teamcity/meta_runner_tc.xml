@@ -5,6 +5,10 @@
       <param name="ARTIFACTORY_PASSWORD" value="******" spec="password display='hidden'" />
       <param name="ARTIFACTORY_URL" value="http://127.0.0.1:8081/artifactory/" />
       <param name="ARTIFACTORY_USER" value="admin" spec="text display='hidden' validationMode='any'" />
+      <param name="DOCKER_PASSWORD" value="******" spec="password display='hidden'" />
+      <param name="DOCKER_REPO" value="nginx" spec="text validationMode='any' display='normal'" />
+      <param name="DOCKER_TAG" value="latest" spec="text display='normal' validationMode='any'" />
+      <param name="DOCKER_USER" value="swatkiev" spec="text display='hidden' validationMode='any'" />
       <param name="system.build.vcs.number.1" value="%build.vcs.number.TestTask_MyGithub%" spec="text display='hidden' description='%build.vcs.number.TestTask_UetciPipeline%' validationMode='any'" />
     </parameters>
     <build-runners>
@@ -87,6 +91,24 @@ curl -X PUT -u %ARTIFACTORY_USER%:%ARTIFACTORY_PASSWORD% http://127.0.0.1:8081/a
           <param name="script.content"><![CDATA[export CI=True
 jfrog rt del --spec old_files_deleted.aql --url=%ARTIFACTORY_URL% --user=%ARTIFACTORY_USER% --password=%ARTIFACTORY_PASSWORD%]]></param>
           <param name="teamcity.build.workingDir" value="/root" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner name="docker test" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[HUB_USERNAME=%DOCKER_USER%
+HUB_PASSWORD=%DOCKER_PASSWORD%
+HUB_REPO=%DOCKER_REPO%
+HUB_TAG=%DOCKER_TAG%
+HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$HUB_USERNAME\", \"password\": \"$HUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+docker tag $HUB_USERNAME:$HUB_TAG $HUB_USERNAME/$HUB_REPO:$HUB_TAG
+docker login -u $HUB_USERNAME -p $HUB_PASSWORD
+docker push $HUB_USERNAME/$HUB_REPO:$HUB_TAG
+curl -i -X GET -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN"  https://hub.docker.com/v2/namespaces/$HUB_USERNAME/repositories/$HUB_REPO/
+curl -i -X GET -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/repositories/$HUB_USERNAME/$HUB_REPO/tags/$HUB_TAG/
+curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/repositories/$HUB_USERNAME/$HUB_REPO/tags/$HUB_TAG/
+curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN"  https://hub.docker.com/v2/namespaces/$HUB_USERNAME/repositories/$HUB_REPO/]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
