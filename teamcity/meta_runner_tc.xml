@@ -105,6 +105,7 @@ HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\
 docker tag $HUB_USERNAME:$HUB_TAG $HUB_USERNAME/$HUB_REPO:$HUB_TAG
 docker login -u $HUB_USERNAME -p $HUB_PASSWORD
 docker push $HUB_USERNAME/$HUB_REPO:$HUB_TAG
+docker rmi $HUB_USERNAME/$HUB_REPO:$HUB_TAG
 curl -i -X GET -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN"  https://hub.docker.com/v2/namespaces/$HUB_USERNAME/repositories/$HUB_REPO/
 curl -i -X GET -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/repositories/$HUB_USERNAME/$HUB_REPO/tags/$HUB_TAG/
 curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/repositories/$HUB_USERNAME/$HUB_REPO/tags/$HUB_TAG/
