@@ -105,7 +105,6 @@ HUB_TAG=%build.counter%
 HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$HUB_USERNAME\", \"password\": \"$HUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
 docker pull $HUB_REPO:$HUB_TAG_0
 docker tag $HUB_REPO:$HUB_TAG_0 $HUB_USERNAME/$HUB_REPO:$HUB_TAG
-docker tag $HUB_REPO:$HUB_TAG $HUB_USERNAME/$HUB_REPO:$HUB_TAG
 docker login -u $HUB_USERNAME -p $HUB_PASSWORD
 docker push $HUB_USERNAME/$HUB_REPO:$HUB_TAG
 docker rmi $HUB_USERNAME/$HUB_REPO:$HUB_TAG
