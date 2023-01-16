@@ -101,7 +101,7 @@ jfrog rt del --spec old_files_deleted.aql --url=%ARTIFACTORY_URL% --user=%ARTIFA
 HUB_PASSWORD=%DOCKER_PASSWORD%
 HUB_REPO=%DOCKER_REPO%
 HUB_TAG_0=%DOCKER_TAG%
-HUB_TAG=%teamcity.build.id%
+HUB_TAG=%build.counter%
 HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$HUB_USERNAME\", \"password\": \"$HUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
 docker pull $HUB_REPO:$HUB_TAG_0
 docker tag $HUB_REPO:$HUB_TAG_0 $HUB_USERNAME/$HUB_REPO:$HUB_TAG
