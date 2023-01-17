@@ -1,3 +1,3 @@
 http://192.168.0.123:8111/app/rest/builds?locator=defaultFilter:false,finishDate:(date:20220101T000000%2B0200,condition:after),start:0,count:100,user:admin
 
-http://192.168.0.123:8111/app/rest/builds?locator=defaultFilter:false&fields=build(id,number,status,buildType(id,name,projectName),statistics(property(name,value))),finishDate:(date:20220101T000000%2B0200,condition:after),start:0,count:100
+http://192.168.0.123:8111/app/rest/builds?locator=user:admin,defaultFilter:false&fields=build(id,number,status,buildType(id,name,projectName),statistics(property(name,value))),finishDate:(date:20220101T000000%2B0200,condition:after),start:0,count:100
