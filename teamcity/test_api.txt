@@ -4,4 +4,4 @@ http://192.168.0.123:8111/app/rest/builds?locator=user:admin,defaultFilter:false
 
 http://192.168.0.123:8111/app/rest/audit?locator=action:build_add_to_queue,start:0,count:100,user:admin
 
-http://192.168.0.123:8111/app/rest/builds?locator=defaultFilter:false,startDate:(date:20220101T000000%2B0200,condition:after),finishDate(date:20230101T000000%2B0200,condition:before),start:0,count:10000&fields=build(id,number,status,buildType(id,name,projectName),triggered(type,date,user(username)),statistics(property(name,value)))
+http://192.168.0.123:8111/app/rest/builds?locator=triggered:(type:user),defaultFilter:false,startDate:(date:20220101T000000%2B0200,condition:after),finishDate(date:20230101T000000%2B0200,condition:before),start:0,count:100&fields=build(id,number,status,buildType(id,name,projectName),triggered(type,date,user(username)),statistics(property(name,value)))
