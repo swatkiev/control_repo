@@ -71,8 +71,22 @@ ls -la /opt/teamcity/backups/]]></param>
       </runner>
       <runner name="send to artifactory" type="simpleRunner">
         <parameters>
-          <param name="script.content"><![CDATA[DATE=$(date "+%%Y-%%m-%%d")
-curl -X PUT -u %ARTIFACTORY_USER%:%ARTIFACTORY_PASSWORD% http://127.0.0.1:8081/artifactory/generic-local/ssl-${DATE}.txt -T ssl_tc.txt]]></param>
+          <param name="script.content"><![CDATA[# ssl certs check
+ssl-cert-check -x30 -f ssl-cert-check-domains | tee ssl_tc.txt
+ls -la ${0%/*}
+# teamcity backups
+ls -la /opt/teamcity/backups/
+# send result to github
+# git clone git@github.com:swatkiev/control_repo.git
+cd /home/swatkiev/control_repo/
+git status
+git pull
+cp /home/swatkiev/test/ssl-cert-check/ssl_tc.txt /home/swatkiev/control_repo/teamcity/ssl_tc.txt
+git status
+git add .
+git commit -m "add ssl_tc.txt : %build.counter%"
+git push
+git status]]></param>
           <param name="teamcity.build.workingDir" value="/home/swatkiev/test/ssl-cert-check/" />
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
