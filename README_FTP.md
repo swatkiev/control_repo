@@ -13,3 +13,11 @@ curlftpfs#ftp://{login}:{password}@{ftp_ip_host}/home/ /home/ftp/ fuse rw,allow_
 
 # Mount FTP on host:  
 sudo mount -a
+
+# FTP on Windows host: 
+
+C:\Users\Administrator>FTPUSE Z: {ftp_ip_host}/home {password} /PORT:21 /USER:{login}
+
+https://www.ferrobackup.com/map-ftp-as-disk.html
+
+https://www.digitalcitizen.life/map-network-drive-ftp-websites-windows-10/
