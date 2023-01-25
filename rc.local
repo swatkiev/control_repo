@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+source /etc/environment
+
+if [ $FIRST_BOOT_INIT = "OK" ];
+        then echo '{ftp_password}' | sshfs {ftp_user}@{ftp_ip_host}:/home /home/ftp -o port={ftp_port} -o password_stdin,allow_other
+        exit 0
+        else
+                mount /dev/cdrom /mnt > /dev/null 2>&1
+
+                meta="/mnt/openstack/latest/meta_data.json"
+
+                touch /var/log/openstack_first_boot.log
+
+                #Setting root password
+                adminpass=$(cat $meta | awk -F '"admin_pass":' '{ print $2 }' | awk -F ',' '{ print $1 }' | awk -F '"' '{ print $2 }')
+                echo $( [ -n "$adminpass" ] && echo -e "$adminpass\n$adminpass\n" | passwd root > /dev/null 2>&1 )
+                echo [`date "+%Y-%m-%d %H:%M:%S"`] SET_ROOT_PASS=OK >> /var/log/openstack_first_boot.log
+
+
+                #Setting hostname
+                hostname_old=`cat /etc/hostname`
+                hostname=$(cat $meta | awk -F '"hostname":' '{ print $2 }' | awk -F ',' '{ print $1 }' | awk -F '"' '{ print $2 }')
+                hostname $hostname
+                sed -i -e "s/$hostname_old/$hostname/g" /etc/hosts
+                sed -i -e "s/$hostname_old/$hostname/g" /etc/hostname
+                sed -i -e "s/$hostname_old/$hostname/g" /etc/ssh/ssh_host_rsa_key.pub
+                sed -i -e "s/$hostname_old/$hostname/g" /etc/ssh/ssh_host_dsa_key.pub
+                /etc/init.d/hostname.sh start
+                /etc/init.d/networking restart
+                echo [`date "+%Y-%m-%d %H:%M:%S"`] SET_HOSTNAME=OK >> /var/log/openstack_first_boot.log
+
+
+                #Setting ssh key
+                sshkey=$(cat $meta | awk -F '"public_keys":' '{ print $2 }' | awk -F '}' '{ print $1}' | awk -F '"' '{ print $4}')
+                if [ -n "$sshkey" ]
+                        then
+                                mkdir /root/.ssh/
+                                touch /root/.ssh/authorized_keys
+                                echo $sshkey > /root/.ssh/authorized_keys
+                                chmod 600 /root/.ssh/authorized_keys
+                                echo [`date "+%Y-%m-%d %H:%M:%S"`] SET_SSH_KEY=OK >> /var/log/openstack_first_boot.log
+                fi
+                umount /dev/cdrom
+                sed -i -e "s/FIRST_BOOT_INIT=NO/FIRST_BOOT_INIT=OK/g" /etc/environment
+                exit 0
+fi

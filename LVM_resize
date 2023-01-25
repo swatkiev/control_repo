@@ -1,0 +1,27 @@
+1. отправить команду скан на скази контроллер
+echo '- - -' > /sys/class/scsi_host/host0/scan 
+echo '- - -' > /sys/class/scsi_host/host1/scan 
+echo '- - -' > /sys/class/scsi_host/host2/scan
+
+2. посмотреть название диска 
+dmesg (dmesg | grep sd'X')
+fdisk -l
+
+3. создать раздел и группу 
+pvcreate /dev/sdb (sd'X')
+vgextend system /dev/sdb (sd'X')
+
+4. расширить volume и filesystem 
+lvextend system/root /dev/sdb (sd'X')
+resize2fs /dev/mapper/system-root
+
+listing:
+echo '- - -' > /sys/class/scsi_host/host0/scan
+echo '- - -' > /sys/class/scsi_host/host1/scan
+echo '- - -' > /sys/class/scsi_host/host2/scan
+dmesg
+fdisk -l
+pvcreate /dev/sdg
+vgextend system /dev/sdg
+lvextend system/root /dev/sdg
+resize2fs /dev/mapper/system-root
