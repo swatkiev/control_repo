@@ -4,15 +4,16 @@ echo '- - -' > /sys/class/scsi_host/host1/scan
 echo '- - -' > /sys/class/scsi_host/host2/scan
 
 2. посмотреть название диска 
-dmesg (dmesg | grep sd'X')
+dmesg (dmesg | grep sd*)
 fdisk -l
+ll /dev/sd*
 
 3. создать раздел и группу 
-pvcreate /dev/sdb (sd'X')
-vgextend system /dev/sdb (sd'X')
+pvcreate /dev/sdb (sd*)
+vgextend system /dev/sdb (sd*)
 
 4. расширить volume и filesystem 
-lvextend system/root /dev/sdb (sd'X')
+lvextend system/root /dev/sdb (sd*)
 resize2fs /dev/mapper/system-root
 
 listing:
@@ -21,6 +22,7 @@ echo '- - -' > /sys/class/scsi_host/host1/scan
 echo '- - -' > /sys/class/scsi_host/host2/scan
 dmesg
 fdisk -l
+ll /dev/sd*
 pvcreate /dev/sdg
 vgextend system /dev/sdg
 lvextend system/root /dev/sdg
