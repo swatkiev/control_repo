@@ -1,4 +1,5 @@
 # Automount FTP to /etc/fstab
+https://wiki.archlinux.org/title/CurlFtpFS
 
 # Download and install curlftpfs on host:
 sudo apt-get install curlftpfs
