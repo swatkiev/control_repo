@@ -1,14 +1,20 @@
-<meta-runner name="Test_trigger_uetci">
-  <description>Test_trigger_uetci_metarunner</description>
+<meta-runner name="Test_trigger_uetci_backup">
+  <description>Test_trigger_uetci_backup</description>
   <settings>
     <parameters>
       <param name="ARTIFACTORY_PASSWORD" value="******" spec="password display='hidden'" />
       <param name="ARTIFACTORY_URL" value="http://127.0.0.1:8081/artifactory/" />
       <param name="ARTIFACTORY_USER" value="admin" spec="text display='hidden' validationMode='any'" />
+      <param name="BOT_ID" value="******" spec="password display='hidden'" />
+      <param name="BOT_TOKEN" value="******" spec="password display='hidden'" />
+      <param name="CHAT_ID" value="******" spec="password display='hidden'" />
       <param name="DOCKER_PASSWORD" value="******" spec="password display='hidden'" />
       <param name="DOCKER_REPO" value="nginx" spec="text validationMode='any' display='normal'" />
       <param name="DOCKER_TAG" value="latest" spec="text display='normal' validationMode='any'" />
       <param name="DOCKER_USER" value="swatkiev" spec="text display='hidden' validationMode='any'" />
+      <param name="FTP_PASSWORD" value="******" spec="password display='hidden'" />
+      <param name="FTP_URL" value="******" spec="password display='hidden'" />
+      <param name="FTP_USER" value="******" spec="password display='hidden'" />
       <param name="system.build.vcs.number.1" value="%build.vcs.number.TestTask_MyGithub%" spec="text display='hidden' description='%build.vcs.number.TestTask_UetciPipeline%' validationMode='any'" />
     </parameters>
     <build-runners>
@@ -22,7 +28,8 @@ curl localhost:8082 > /root/artifactory/newtest.txt
 # OLDART=$(</root/artifactory/test2.txt)
 ART=`cat /root/artifactory/test.txt | grep "curl"`
 echo $ART
-NEWART=`cat /root/artifactory/newtest.txt | grep "Unhealthy" | awk 'NR==1 {print $2}'`
+# echo $OLDART
+NEWART=`cat /root/artifactory/newtest.txt | grep "Unhealthy" | awk {'print $2'}`
 echo $NEWART
 # BADART="curl: (56) Recv failure: Connection reset by peer"
 # BADART2="curl: (52) Empty reply from server"
@@ -47,13 +54,13 @@ rm -f /root/artifactory/newtest.txt
       </runner>
       <runner name="test_print_uetci" type="simpleRunner">
         <parameters>
-          <param name="script.content"><![CDATA[#cd uet_ci/sandbox/test.pipeline/
+          <param name="script.content"><![CDATA[#cd uet_ci/sandbox/swatkiev/
 #p4 trust -y
 python3 trigger_uetci.py
 echo "trigger_uetci.py выполнен успешно"
 python3 trigger_uetci2.py
 echo "trigger_uetci2.py выполнен успешно"]]></param>
-          <param name="teamcity.build.workingDir" value="/opt/p4/swatkiev_uetci/" />
+          <param name="teamcity.build.workingDir" value="/opt/p4/swatkiev/" />
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
@@ -62,9 +69,9 @@ echo "trigger_uetci2.py выполнен успешно"]]></param>
         <parameters>
           <param name="script.content"><![CDATA[# ssl certs check
 ssl-cert-check -x30 -f ssl-cert-check-domains | tee ssl_tc.txt
-ls -la ${0%/*}
+# ls -la ${0%/*}
 # teamcity backups
-ls -la /opt/teamcity/backups/
+# ls -la /opt/teamcity/backups/
 # send result to github
 # git clone git@github.com:swatkiev/control_repo.git
 cd /home/swatkiev/control_repo/
@@ -128,10 +135,42 @@ curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKE
           <param name="use.custom.script" value="true" />
         </parameters>
       </runner>
+      <runner name="teamcity_backup" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/bin/bash
+
+export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
+export PATH=$JAVA_HOME/bin:$PATH
+
+# apt-get install curlftpfs -y
+# mkdir -p /home/ftp/backups/
+
+ls -la /home/ftp/backups/ 2> /opt/teamcity/check.txt
+CHECK=`cat /opt/teamcity/check.txt | awk {'print $9'}`
+echo $CHECK
+if [[ $CHECK =~ ^directory ]]; then
+  echo "FTP umount"
+  curlftpfs %FTP_URL% /home/ftp/ -o user=%FTP_USER%:%FTP_PASSWORD%
+  echo "FTP mount"
+else
+  echo "FTP mount"
+fi
+
+rm -f /opt/teamcity/check.txt
+ls -la /home/ftp/backups/
+
+./bin/maintainDB.sh backup --all -M -F /home/ftp/backups/
+find /home/ftp/backups -type f -mtime +4 -exec rm -rf {} \;
+ls -la /home/ftp/backups/]]></param>
+          <param name="teamcity.build.workingDir" value="/opt/teamcity" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
       <runner name="build_status" type="simpleRunner">
         <parameters>
           <param name="script.content"><![CDATA[STATUS=`curl -u "%system.teamcity.auth.userId%:%system.teamcity.auth.password%" http://localhost:8111/app/rest/builds/id:%teamcity.build.id%/status`
-curl -X POST "https://api.telegram.org/bot*****************/sendMessage?chat_id=*********&text=BuildStatus-$STATUS"]]></param>
+curl -X POST "https://api.telegram.org/%BOT_ID%:%BOT_TOKEN%/sendMessage?chat_id=%CHAT_ID%&text=BuildStatus-$STATUS"]]></param>
           <param name="teamcity.step.mode" value="execute_if_failed" />
           <param name="use.custom.script" value="true" />
         </parameters>
