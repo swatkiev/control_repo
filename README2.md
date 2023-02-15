@@ -46,3 +46,8 @@ ansible-playbook manifest.yaml -i myhosts -v
         find:
 	  path: /root
 	  file_type: file
+
+
+# for work with windows:
+
+https://github.com/ansible/ansible/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
