@@ -44,6 +44,8 @@ ansible local_servers -m apt -a "name=stress state=removed" -b
 
 ansible local_servers -m shell -a "ls -la /root/ansible" -vvv
 
+ansible-inventory --list (--graph)
+
 # playbook example (yaml):
 
 ---
