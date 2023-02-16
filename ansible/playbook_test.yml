@@ -1,0 +1,34 @@
+---
+- name: Test Playbook
+  hosts: local_servers
+  become: yes
+
+  vars:
+    message1: Privet
+    message2: Mir
+    secret: hfrhgerggjgnnbrtnb
+
+  tasks:
+  - name: Print secret
+    debug:
+      var: secret
+
+  - debug:
+      msg: "Secret: {{ secret }}"
+
+  - debug:
+      msg: "Owner of this server is {{ ansible_user }}"
+
+  - set_fact: full_message="{{ message1 }} {{ message2 }} from {{ ansible_user }}"
+
+  - debug:
+      var: full_message
+
+  - debug:
+      var: ansible_os_family
+
+  - shell: uptime
+    register: results
+
+  - debug:
+      var: results.stdout
