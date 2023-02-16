@@ -26,6 +26,24 @@ myhosts - file with hosts (if not standart)
 
 ansible-playbook manifest.yaml -i myhosts -v
 
+ansible -i hosts.txt all -m ping
+
+ansible remote_servers -m shell -a "uptime"
+
+ansible remote_servers -m copy -a "src=test.txt dest=/root mode=777" -b
+
+ansible remote_servers -m file -a "path=/root/test.txt state=absent" -b
+
+ansible local_servers -m get_url -a "url=http://example.com/index.html dest=/root mode=777" -b
+
+ansible local_servers -m uri -a "url=http://example.com/index.html return_content=yes"
+
+ansible local_servers -m apt -a "name=stress state=installed" -b
+
+ansible local_servers -m apt -a "name=stress state=removed" -b
+
+ansible local_servers -m shell -a "ls -la /root/ansible" -vvv
+
 # playbook example (yaml):
 
 ---
