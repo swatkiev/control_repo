@@ -50,4 +50,12 @@ ansible-playbook manifest.yaml -i myhosts -v
 
 # for work with windows:
 
+Save as ConfigureRemotingForAnsible.ps1 on your Windows and run in Powershell like Administrator:
+
 https://github.com/ansible/ansible/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+
+Install pip and pywinrm on Ansible linux host:
+
+apt install python-pip
+
+pip install "pywinrm>=0.2.2"

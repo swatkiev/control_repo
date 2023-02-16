@@ -1,0 +1,23 @@
+[local_servers]
+my_linux   ansible_host=192.168.0.123   ansible_user=root   ansible_ssh_private_key_file=/home/swatkiev/.ssh/id_rsa
+
+[remote_servers]
+grafana ansible_host=***.***.**.**   ansible_port=23569
+docker  ansible_host=**.***.***.***  ansible_port=22987
+
+[remote_servers:vars]
+ansible_user=root
+ansible_ssh_private_key_file=/home/swatkiev/.ssh/id_rsa
+
+[windows_servers]
+windows2019EN ansible_host=**.***.***.*** ansible_port=5986
+
+[windows_servers:vars]
+ansible_user=Administrator
+ansible_password=***********
+ansible_connection=winrm
+ansible_winrm_server_cert_validation=ignore
+
+[remote_ALL:children]
+remote_servers
+windows_servers
