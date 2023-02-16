@@ -32,3 +32,27 @@
 
   - debug:
       var: results.stdout
+
+  - name: Say Hello
+    debug: msg="Hello {{ item }}"
+    loop:
+      - "Alex"
+      - "Michael"
+
+  - name: Loop until example
+    shell: echo -n X >> myfile.txt && cat myfile.txt
+    register: output
+    delay: 2
+    retries: 10
+    until: output.stdout.find("XXXX") == false
+
+  - name: Print output
+    debug:
+      var: output.stdout
+
+#  - name: Install packages
+#    apt: name={{ item }} state=installed
+#    loop:
+#      - python
+#      - tree
+#      - nginx

@@ -4,8 +4,10 @@
    become: yes
 
    vars:
-     source_file: ./index.html
-     destin_file: /var/www/html
+#     source_file: ./index.html
+#     destin_file: /var/www/html
+     source_folder: ./MySite
+     destin_folder: /var/www/html
 
    tasks:
    - name: Check and Print Linux
@@ -15,10 +17,6 @@
 
        - name: Install Apache for Ubuntu
          apt: name=apache2 state=latest
-
-       - name: Copy page to servers
-         copy: src={{ source_file }} dest={{ destin_file }} mode=0555
-         notify: Restart Apache Ubuntu
 
        - name: Start Web server
          service: name=apache2 state=started enabled=yes
@@ -30,18 +28,26 @@
        - name: Install Apache for RedHat
          yum: name=httpd state= latest
 
-       - name: Copy page to servers
-         copy: src={{ source_file }} dest={{ destin_file }} mode=0555
-         notify: Restart Apache RedHat
-
        - name: Start Web server
          service: name=httpd state=started enabled=yes
 
      when: ansible_os_family == "RedHat"
 
+   - name: Copy page to servers
+#     copy: src={{ source_folder }}/{{ item }} dest={{ destin_folder }} mode=0555
+     copy: src={{ item }} dest={{ destin_folder }} mode=0555
+     with_fileglob: "{{ source_folder }}/*.*"
+#     loop:
+#       - "index.html"
+     notify:
+       - Restart Apache Ubuntu
+       - Restart Apache RedHat
+
    handlers:
    - name: Restart Apache Ubuntu
      service: name=apache2 state=restarted
+     when: ansible_os_family == "Debian"
 
    - name: Restart Apache RedHat
      service: name=httpd state=restarted
+     when: ansible_os_family == "RedHat"
