@@ -1,0 +1,38 @@
+---
+# tasks file for deploy_apache_web
+ - name: Check and Print Linux
+   debug: var=ansible_os_family
+
+ - block:  # block for Ubuntu
+
+     - name: Install Apache for Ubuntu
+       apt: name=apache2 state=latest
+
+     - name: Start Web server
+       service: name=apache2 state=started enabled=yes
+
+   when: ansible_os_family == "Debian"
+
+ - block:  # block for RedHat
+
+     - name: Install Apache for RedHat
+       yum: name=httpd state= latest
+
+     - name: Start Web server
+       service: name=httpd state=started enabled=yes
+
+   when: ansible_os_family == "RedHat"
+
+ - name: Generate index.html file
+   template: src=index.j2 dest={{ destin_folder }}/index.html mode=0555
+   notify:
+     - Restart Apache Ubuntu
+     - Restart Apache RedHat
+
+ - name: Copy page to servers
+   copy: src={{ item }} dest={{ destin_folder }} mode=0555
+   loop:
+     - "image.png"
+   notify:
+     - Restart Apache Ubuntu
+     - Restart Apache RedHat

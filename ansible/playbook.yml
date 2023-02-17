@@ -45,7 +45,7 @@
 #     with_fileglob: "{{ source_folder }}/*.*"
      loop:
 #       - "index.html"
-        - "image.png"
+       - "image.png"
      notify:
        - Restart Apache Ubuntu
        - Restart Apache RedHat

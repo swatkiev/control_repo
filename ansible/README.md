@@ -46,6 +46,8 @@ ansible local_servers -m shell -a "ls -la /root/ansible" -vvv
 
 ansible-inventory --list (--graph)
 
+ansible-galaxy init "name of your role" (create folder roles before init --> mkdir -p roles)
+
 # playbook example (yaml):
 
 ---
