@@ -1,6 +1,7 @@
 ---
 - name: Test Playbook
   hosts: local_servers
+  any_errors_fatal: true
   become: yes
 
   vars:
@@ -98,6 +99,19 @@
       delay: 5
       timeout: 40
     delegate_to: 127.0.0.1
+
+  - name: ErrorTask1
+    apt: name=treeee state=latest
+    ignore_errors: yes
+
+  - name: ErrorTask2
+    shell: echo Hello World
+    register: erresults
+#    failed_when: "'World' in erresults.stdout"
+    failed_when: erresults.rc == 0
+
+  - debug:
+      var: erresults
 
 #  - name: Install packages
 #    apt: name={{ item }} state=installed
