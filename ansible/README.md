@@ -48,6 +48,8 @@ ansible-inventory --list (--graph)
 
 ansible-galaxy init "name of your role" (create folder roles before init --> mkdir -p roles)
 
+ansible-playbook playbook_with_roles.yml --extra-var "MYHOSTS=remote_servers"
+
 # playbook example (yaml):
 
 ---
