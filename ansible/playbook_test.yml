@@ -9,6 +9,13 @@
     message2: Mir
     secret: hfrhgerggjgnnbrtnb
     mytext: "Privet"
+    admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62366365623238626139373232373636663932303965373932373766373236616231376432626238
+          6561376234346430663266396632346366666231303461350a393933343236366233626432626166
+          37643730363230623661386366313262353735383133323333316638383133336265623365356163
+          6262396535646438630a323838646161613039376236326234393830313962616635666466636638
+          6135
 
   tasks:
   - name: Print secret
@@ -112,6 +119,16 @@
 
   - debug:
       var: erresults
+
+  - name: Create config
+    copy:
+      dest: "/root/testfolder/config.conf"
+      content: |
+        port = 8080
+        log  = 3days
+        home = /opt
+        user = admin
+        password = {{ admin_password }}
 
 #  - name: Install packages
 #    apt: name={{ item }} state=installed

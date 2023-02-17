@@ -50,6 +50,26 @@ ansible-galaxy init "name of your role" (create folder roles before init --> mkd
 
 ansible-playbook playbook_with_roles.yml --extra-var "MYHOSTS=remote_servers"
 
+ansible-vault create "your secret file"
+
+ansible-vault view "your secret file"
+
+ansible-vault edit "your secret file"
+
+ansible-vault rekey "your secret file"
+
+ansible-vault encrypt "your secret file"
+
+ansible-vault decrypt "your secret file"
+
+ansible-playbook playbook_vault.yml --ask-vault-pass
+
+ansible-playbook playbook_vault.yml --vault-password-file "file with password"
+
+ansible-vault encrypt_string --stdin-name "name_of_string"
+
+echo -n "your_secret_password" | ansible-vault encrypt_string
+
 # playbook example (yaml):
 
 ---
