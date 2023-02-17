@@ -103,3 +103,23 @@ Install pip and pywinrm on Ansible linux host:
 apt install python-pip
 
 pip install "pywinrm>=0.2.2"
+
+# for work with AWS:
+
+https://github.com/vshn/ansible-dynamic-inventory-ec2
+
+https://docs.ansible.com/ansible/latest/collections/amazon/aws/docsite/aws_ec2_guide.html
+
+https://docs.ansible.com/ansible/latest/inventory_guide/intro_dynamic_inventory.html
+
+export AWS_ACCESS_KEY_ID='AK123'
+
+export AWS_SECRET_ACCESS_KEY='abc123'
+
+./ec2.py --list --refresh-cache
+
+ansible -i ec2.py aws_servers -m ping (you can use tags from AWS instead of "aws_servers", like: us-west-1, tag_Env_PROD, tag_NAME_TEST)
+
+ansible-playbook -i ec2.py playbook.yml (set in playbook hosts: "tags from AWS")
+
+ansible-doc -l | grep ec2
