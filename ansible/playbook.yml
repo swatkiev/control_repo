@@ -33,12 +33,19 @@
 
      when: ansible_os_family == "RedHat"
 
+   - name: Generate index.html file
+     template: src={{ source_folder }}/index.j2 dest={{ destin_folder }}/index.html mode=0555
+     notify:
+       - Restart Apache Ubuntu
+       - Restart Apache RedHat
+
    - name: Copy page to servers
-#     copy: src={{ source_folder }}/{{ item }} dest={{ destin_folder }} mode=0555
-     copy: src={{ item }} dest={{ destin_folder }} mode=0555
-     with_fileglob: "{{ source_folder }}/*.*"
-#     loop:
+     copy: src={{ source_folder }}/{{ item }} dest={{ destin_folder }} mode=0555
+#     copy: src={{ item }} dest={{ destin_folder }} mode=0555
+#     with_fileglob: "{{ source_folder }}/*.*"
+     loop:
 #       - "index.html"
+        - "image.png"
      notify:
        - Restart Apache Ubuntu
        - Restart Apache RedHat
