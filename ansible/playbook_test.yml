@@ -7,6 +7,7 @@
     message1: Privet
     message2: Mir
     secret: hfrhgerggjgnnbrtnb
+    mytext: "Privet"
 
   tasks:
   - name: Print secret
@@ -49,6 +50,12 @@
   - name: Print output
     debug:
       var: output.stdout
+
+  - name: Create folders
+    include: create_folders.yml
+
+  - name: Create files
+    include: create_files.yml  mytext="Hello"
 
 #  - name: Install packages
 #    apt: name={{ item }} state=installed

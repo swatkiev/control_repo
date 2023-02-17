@@ -1,0 +1,12 @@
+---
+ - name: Create folder
+   file:
+     path: /home/swatkiev/testfolder/folder1
+     state: directory
+     mode: 0755
+
+ - name: Create folder2
+   file:
+     path: /home/swatkiev/testfolder/folder2
+     state: directory
+     mode: 0755
