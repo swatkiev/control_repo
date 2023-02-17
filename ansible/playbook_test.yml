@@ -51,11 +51,53 @@
     debug:
       var: output.stdout
 
+  - name: Ping test
+    ping:
+
   - name: Create folders
     include: create_folders.yml
 
   - name: Create files
     include: create_files.yml  mytext="Hello"
+
+  - name: Unregistred server
+    shell: echo This server {{ inventory_hostname }} was deregistred, node name is {{ ansible_nodename }} >> /root/testfolder/log.txt
+    delegate_to: 127.0.0.1
+
+  - name: Update DB
+    shell: echo Updating DB...
+    run_once: true
+    delegate_to: my_linux
+
+  - name: Create file10
+    copy:
+      dest: /root/testfolder/file10.txt
+      content: |
+        This is FileN10
+        On English Hello
+        On Russian {{ mytext }}
+    delegate_to: my_linux
+
+  - name: Create file20
+    copy:
+      dest: /root/testfolder/file20.txt
+      content: |
+        This is FileN20
+        On English Hello
+        On Russian {{ mytext }}
+
+  - name: Reboot servers
+    shell: sleep 3 && reboot now
+    async: 1
+    poll: 0
+
+  - name: Wait servers
+    wait_for:
+      host: "{{ inventory_hostname }}"
+      state: started
+      delay: 5
+      timeout: 40
+    delegate_to: 127.0.0.1
 
 #  - name: Install packages
 #    apt: name={{ item }} state=installed
