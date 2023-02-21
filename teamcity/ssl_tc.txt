@@ -1,7 +1,7 @@
 
 Host                                            Status       Expires      Days
 ----------------------------------------------- ------------ ------------ ----
-mail2.swatkiev.pp.ua:443                        Valid        Apr 20, 2023   59
-mail.testimkuber.pp.ua:4433                     Valid        Apr 20, 2023   59
-mail.szaka.tk:3443                              Valid        Apr 20, 2023   59
-swatkiev.pp.ua:3443                             Expired      Feb 10, 2022 -375
+mail2.swatkiev.pp.ua:443                        Valid        Apr 20, 2023   58
+mail.testimkuber.pp.ua:4433                     Valid        Apr 20, 2023   58
+mail.szaka.tk:3443                              Valid        Apr 20, 2023   58
+swatkiev.pp.ua:3443                             Expired      Feb 10, 2022 -376
