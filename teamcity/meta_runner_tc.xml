@@ -161,7 +161,9 @@ ls -la /home/ftp/backups/
 
 ./bin/maintainDB.sh backup --all -M -F /home/ftp/backups/
 find /home/ftp/backups -type f -mtime +4 -exec rm -rf {} \;
-ls -la /home/ftp/backups/]]></param>
+ls -la /home/ftp/backups/
+#echo "FTP umount"
+#umount /home/ftp/]]></param>
           <param name="teamcity.build.workingDir" value="/opt/teamcity" />
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
