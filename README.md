@@ -44,16 +44,40 @@ change 2GB use of RAM to some different (JAVA_ARGS="-Xms256m -Xmx512m -Djruby.lo
 
 server = "your.hostname"
 
-- gem install r10k
+- gem install r10k (on agent)
 
-- mkdir /etc/puppetlabs/r10k
+- mkdir /etc/puppetlabs/r10k (on agent)
 
-- nano /etc/puppetlabs/r10k/r10k.yaml
+- nano /etc/puppetlabs/r10k/r10k.yaml (on agent)
 
 see example in repo
 
-- r10k deploy environment -p
+- r10k deploy environment -p (on agent)
 
-- puppet agent -t
+- puppet agent -td (on agent)
 
-- puppetserver ca sign --all (puppetserver ca list)
+- puppetserver ca sign --all (puppetserver ca list) (on master)
+
+- puppet cert list --all (on master)
+
+- if you have error something like this (on agent):
+
+Debug: Creating new connection for "master.host.name"
+
+Info: Not using expired certificate for ca from cache; expired at YYYY-MM-DD HH:MM:SS UTC
+
+Error: Could not run: stack level too deep
+
+puppet cert clean "agent.host.name" (on master)
+
+puppet agent -td (on agent)
+
+puppetserver ca sign --all (puppetserver ca list) (on master)
+
+- if on agent "Error: Could not run: stack level too deep" repeat again and on master you have message "No certificates to list":
+
+save to /tmp and delete all old certs from /etc/puppetlabs/puppet/ssl (on agent)
+
+puppet agent -td (on agent)
+
+puppetserver ca sign --all (puppetserver ca list) (on master)
