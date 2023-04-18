@@ -68,16 +68,16 @@ Info: Not using expired certificate for ca from cache; expired at YYYY-MM-DD HH:
 
 Error: Could not run: stack level too deep
 
-puppet cert clean "agent.host.name" (on master)
+1.puppet cert clean "agent.host.name" (on master)
 
-puppet agent -td (on agent)
+2.puppet agent -td (on agent)
 
-puppetserver ca sign --all (puppetserver ca list) (on master)
+3.puppetserver ca sign --all (puppetserver ca list) (on master)
 
 - if on agent "Error: Could not run: stack level too deep" repeat again and on master you have message "No certificates to list":
 
-save to /tmp and delete all old certs from /etc/puppetlabs/puppet/ssl (on agent)
+1.save to /tmp and delete all old certs from /etc/puppetlabs/puppet/ssl (on agent)
 
-puppet agent -td (on agent)
+2.puppet agent -td (on agent)
 
-puppetserver ca sign --all (puppetserver ca list) (on master)
+3.puppetserver ca sign --all (puppetserver ca list) (on master)
