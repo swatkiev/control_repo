@@ -58,7 +58,7 @@ see example in repo
 
 - puppetserver ca sign --all (puppetserver ca list) (on master)
 
-- puppet cert list --all (on master)
+- puppet cert list --all / puppetserver ca list --all (on master)
 
 - if you have error something like this (on agent):
 
