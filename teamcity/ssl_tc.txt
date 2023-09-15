@@ -1,8 +1,8 @@
 
 Host                                            Status       Expires      Days
 ----------------------------------------------- ------------ ------------ ----
-mail2.swatkiev.pp.ua:443                        Valid        Oct 18, 2023   34
-mail.testimkuber.pp.ua:4433                     Expired      Apr 20, 2023 -147
-mail.szaka.tk:3443                              Valid        Dec 10, 2023   87
-swatkiev.pp.ua:3443                             Expired      Feb 10, 2022 -581
-mail.test-keycloak.pp.ua:3443                   Valid        Dec 10, 2023   87
+mail2.swatkiev.pp.ua:443                        Valid        Oct 18, 2023   33
+mail.testimkuber.pp.ua:4433                     Expired      Apr 20, 2023 -148
+mail.szaka.tk:3443                              Unable to resolve the DNS name mail.szaka.tk Unknown  0,    0    0
+swatkiev.pp.ua:3443                             Expired      Feb 10, 2022 -582
+mail.test-keycloak.pp.ua:3443                   Valid        Dec 10, 2023   86
