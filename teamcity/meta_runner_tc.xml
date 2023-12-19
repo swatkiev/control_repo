@@ -130,7 +130,11 @@ docker rmi $HUB_USERNAME/$HUB_REPO:$HUB_TAG
 curl -i -X GET -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN"  https://hub.docker.com/v2/namespaces/$HUB_USERNAME/repositories/$HUB_REPO/
 curl -i -X GET -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/repositories/$HUB_USERNAME/$HUB_REPO/tags/$HUB_TAG/
 curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/repositories/$HUB_USERNAME/$HUB_REPO/tags/$HUB_TAG/
-curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN"  https://hub.docker.com/v2/namespaces/$HUB_USERNAME/repositories/$HUB_REPO/]]></param>
+curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN"  https://hub.docker.com/v2/namespaces/$HUB_USERNAME/repositories/$HUB_REPO/
+docker images > /root/artifactory/test_docker.txt
+DOCKER=`cat /root/artifactory/test_docker.txt | grep "<none>" | awk {'print $3'}`
+docker rmi $DOCKER
+rm -f /root/artifactory/test_docker.txt]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
