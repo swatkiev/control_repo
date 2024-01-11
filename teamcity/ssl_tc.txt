@@ -2,9 +2,7 @@
 Host                                            Status       Expires      Days
 ----------------------------------------------- ------------ ------------ ----
 mail2.swatkiev.pp.ua:443                        Valid        Feb 18, 2024   38
-ERROR: The file named /var/tmp/cert.1a5M8c is unreadable or doesn't exist
-ERROR: Please check to make sure the certificate for mail.testimkuber.pp.ua:4433 is valid
-ERROR: The file named /var/tmp/cert.1a5M8c is unreadable or doesn't exist
+mail.testimkuber.pp.ua:4433                     Expired      Apr 20, 2023 -266
+ERROR: The file named /var/tmp/cert.l68hPk is unreadable or doesn't exist
 ERROR: Please check to make sure the certificate for swatkiev.pp.ua:3443 is valid
-ERROR: The file named /var/tmp/cert.1a5M8c is unreadable or doesn't exist
-ERROR: Please check to make sure the certificate for mail.test-keycloak.pp.ua:3443 is valid
+mail.test-keycloak.pp.ua:3443                   Valid        Feb 11, 2024   31
