@@ -8,13 +8,19 @@ dmesg (dmesg | grep sd*)
 fdisk -l
 ll /dev/sd*
 
-3. создать раздел и группу 
-pvcreate /dev/sdb (sd*)
-vgextend system /dev/sdb (sd*)
+3. проверить название корневого раздела
+df -h
+/dev/mapper/vg0-root--parition  197G   34G  154G  18% /
+df -h
+/dev/mapper/system-root        119G   60G   55G  53% /
 
-4. расширить volume и filesystem 
-lvextend system/root /dev/sdb (sd*)
-resize2fs /dev/mapper/system-root
+4. создать раздел и группу 
+pvcreate /dev/sdb (sd*)
+vgextend {system}/{vg0} /dev/sdb (sd*)
+
+5. расширить volume и filesystem 
+lvextend {system/root}/{/dev/vg0/root-parition} /dev/sdb (sd*)
+resize2fs /dev/mapper/{system-root}/{vg0-root--parition}
 
 listing:
 echo '- - -' > /sys/class/scsi_host/host0/scan
@@ -27,3 +33,13 @@ pvcreate /dev/sdg
 vgextend system /dev/sdg
 lvextend system/root /dev/sdg
 resize2fs /dev/mapper/system-root
+
+listing:
+echo '- - -' > /sys/class/scsi_host/host0/scan
+echo '- - -' > /sys/class/scsi_host/host1/scan
+echo '- - -' > /sys/class/scsi_host/host2/scan
+ll /dev/sd*
+pvcreate /dev/sdb
+vgextend vg0 /dev/sdb
+lvextend /dev/vg0/root-parition /dev/sdb
+resize2fs /dev/mapper/vg0-root--parition
