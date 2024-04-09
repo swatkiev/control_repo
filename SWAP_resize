@@ -1,0 +1,15 @@
+$ swapon --show
+NAME      TYPE SIZE USED PRIO
+/swap.img file 1.9G 945M   -2
+$ swapoff /swap.img
+$ fallocate -l 4G /swap.img
+$ ls -lh /swap.img
+-rw------- 1 root root 4.0G Apr  9 16:28 /swap.img
+$ mkswap /swap.img
+mkswap: /swap.img: warning: wiping old swap signature.
+Setting up swapspace version 1, size = 4 GiB (4294963200 bytes)
+no label, UUID=**********************************
+$ swapon /swap.img
+$ swapon --show
+NAME      TYPE SIZE USED PRIO
+/swap.img file   4G   0B   -2
