@@ -30,11 +30,13 @@ ART=`cat /root/artifactory/test.txt | grep "curl"`
 echo $ART
 # echo $OLDART
 NEWART=`cat /root/artifactory/newtest.txt | grep "Unhealthy" | awk {'print $2'}`
+NEWART2=`cat /root/artifactory/newtest2.txt | grep "console" | awk {'print $1'}`
 echo $NEWART
+echo $NEWART2
 # BADART="curl: (56) Recv failure: Connection reset by peer"
 # BADART2="curl: (52) Empty reply from server"
 # if [[ $OLDART == $BADART || $OLDART == $BADART2 ]]; then
-if [[ $ART =~ ^curl || $NEWART =~ ^Unhealthy ]]; then
+if [[ $ART =~ ^curl || $NEWART =~ ^Unhealthy || $NEWART2 =~ ^console ]]; then
   echo "Artifactory status FAILED"
   docker-compose down
   ping -c5 127.0.0.1
@@ -46,6 +48,7 @@ else
 fi
 rm -f /root/artifactory/test.txt
 rm -f /root/artifactory/newtest.txt
+rm -f /root/artifactory/newtest2.txt
 # rm -f /root/artifactory/test2.txt]]></param>
           <param name="teamcity.build.workingDir" value="/root/artifactory" />
           <param name="teamcity.step.mode" value="default" />
